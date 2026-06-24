@@ -8,7 +8,7 @@ fun main(){
         dni = "13123"
     )
 
-    println(jose.nombre)
+    println(jose)
     println(jose.edad)
     println(jose.email)
     println(jose.dni)
