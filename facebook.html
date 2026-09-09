@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Facebook</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Helvetica, Arial, sans-serif;
+    background-color: #f0f2f5;
+    min-height: 100vh;
+    color: #1c1e21;
+  }
+  a { color: #1877f2; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  [hidden] { display: none !important; }
+
+  /* ---- Login ---- */
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 60px;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 60px 20px;
+  }
+  .left { max-width: 500px; }
+  .logo { color: #1877f2; font-size: 60px; font-weight: bold; margin: 0 0 16px 0; letter-spacing: -1px; }
+  .tagline { font-size: 28px; line-height: 1.3; font-weight: normal; margin: 0; }
+  .right { width: 396px; max-width: 100%; }
+  .login-box, .register-box {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.2), 0 8px 16px rgba(0,0,0,.2);
+    padding: 20px;
+  }
+  input[type="text"], input[type="password"], input[type="email"], select {
+    width: 100%;
+    padding: 14px 16px;
+    margin-bottom: 4px;
+    font-size: 17px;
+    border: 1px solid #dddfe2;
+    border-radius: 6px;
+    outline: none;
+  }
+  input:focus, select:focus { border-color: #1877f2; }
+  .field { margin-bottom: 12px; }
+  .error-text { color: #f02849; font-size: 13px; margin: 2px 0 8px 2px; display: none; }
+  .field.has-error input, .field.has-error select { border-color: #f02849; }
+  .field.has-error .error-text { display: block; }
+  .btn-login {
+    width: 100%; background-color: #1877f2; color: #fff; font-size: 20px; font-weight: bold;
+    border: none; border-radius: 6px; padding: 14px 0; cursor: pointer; margin-bottom: 16px;
+  }
+  .btn-login:hover { background-color: #166fe5; }
+  .forgot { display: block; text-align: center; color: #1877f2; font-size: 14px; margin-bottom: 16px; cursor: pointer; }
+  hr { border: none; border-top: 1px solid #dadde1; margin: 20px 0; }
+  .btn-create {
+    display: block; width: fit-content; margin: 0 auto; background-color: #42b72a; color: #fff;
+    font-size: 17px; font-weight: bold; border: none; border-radius: 6px; padding: 14px 16px; cursor: pointer;
+  }
+  .btn-create:hover { background-color: #36a420; }
+  .create-account { text-align: center; }
+  .footer-note { text-align: center; font-size: 12px; margin-top: 28px; }
+  .form-msg { text-align: center; font-size: 14px; margin: 0 0 12px; padding: 10px; border-radius: 6px; }
+  .form-msg.error { background: #fde2e1; color: #b90000; }
+  @media (max-width: 900px) {
+    .container { flex-direction: column; text-align: center; }
+    .tagline { text-align: center; }
+  }
+
+  /* ---- Register ---- */
+  .register-wrapper { max-width: 432px; margin: 40px auto; padding: 10px; }
+  .register-box h1 { text-align: center; font-size: 28px; margin: 4px 0 4px; }
+  .register-box .subtitle { text-align: center; color: #606770; font-size: 15px; margin: 0 0 16px; }
+  .name-row { display: flex; gap: 8px; }
+  .name-row .field { flex: 1; }
+  .label-small { font-size: 12px; color: #606770; margin: 10px 0 4px 2px; }
+  .dob-row, .gender-row { display: flex; gap: 8px; }
+  .gender-option { flex: 1; border: 1px solid #dddfe2; border-radius: 6px; padding: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
+  .terms { font-size: 11px; color: #777; margin: 12px 0; line-height: 1.4; }
+
+  /* ---- Home / feed ---- */
+  .topbar {
+    background: #fff; border-bottom: 1px solid #dadde1; padding: 10px 24px;
+    display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0;
+  }
+  .topbar .logo { font-size: 28px; margin: 0; }
+  .user-info { display: flex; align-items: center; gap: 12px; }
+  .avatar {
+    width: 36px; height: 36px; border-radius: 50%; background: #1877f2; color: #fff;
+    display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;
+  }
+  .btn-logout { background: #e4e6eb; border: none; border-radius: 6px; padding: 8px 14px; font-weight: bold; cursor: pointer; }
+  .btn-logout:hover { background: #d8dade; }
+  .feed { max-width: 590px; margin: 24px auto; padding: 0 16px; }
+  .card { background: #fff; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,.15); padding: 16px; margin-bottom: 16px; }
+  .post-composer textarea {
+    width: 100%; border: none; resize: none; font-size: 16px; min-height: 50px; outline: none; font-family: inherit;
+  }
+  .composer-actions { display: flex; justify-content: flex-end; border-top: 1px solid #dadde1; margin-top: 10px; padding-top: 10px; }
+  .btn-post { background-color: #1877f2; color: #fff; border: none; border-radius: 6px; padding: 8px 16px; font-weight: bold; cursor: pointer; }
+  .btn-post:disabled { background-color: #a8c8f8; cursor: not-allowed; }
+  .post { border-bottom: 1px solid #eee; padding-bottom: 12px; margin-bottom: 12px; }
+  .post:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .post-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .post-author { font-weight: 600; }
+  .post-time { font-size: 12px; color: #65676b; }
+  .post-text { font-size: 15px; white-space: pre-wrap; margin-bottom: 8px; }
+  .btn-delete { background: none; border: none; color: #65676b; font-size: 13px; cursor: pointer; }
+  .btn-delete:hover { text-decoration: underline; }
+  .empty-state { text-align: center; color: #65676b; padding: 20px; }
+</style>
+</head>
+<body>
+
+  <!-- ============ VISTA: LOGIN ============ -->
+  <div id="loginView">
+    <div class="container">
+      <div class="left">
+        <h1 class="logo">facebook</h1>
+        <p class="tagline">Facebook te ayuda a comunicarte y compartir con las personas que forman parte de tu vida.</p>
+      </div>
+      <div class="right">
+        <div class="login-box">
+          <div id="loginMsg" class="form-msg error" hidden></div>
+          <form id="loginForm" novalidate>
+            <div class="field" id="loginEmailField">
+              <input type="text" id="loginEmail" placeholder="Correo electrónico o número de teléfono" autocomplete="off">
+              <div class="error-text">Por favor, introduce tu correo electrónico.</div>
+            </div>
+            <div class="field" id="loginPassField">
+              <input type="password" id="loginPassword" placeholder="Contraseña" autocomplete="off">
+              <div class="error-text" id="loginPassError">Por favor, introduce tu contraseña.</div>
+            </div>
+            <button type="submit" class="btn-login">Iniciar sesión</button>
+            <a class="forgot" id="forgotLink">¿Olvidaste tu contraseña?</a>
+            <hr>
+            <div class="create-account">
+              <button type="button" class="btn-create" id="goRegister">Crear cuenta nueva</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ VISTA: REGISTRO ============ -->
+  <div id="registerView" hidden>
+    <div class="register-wrapper">
+      <div class="register-box">
+        <h1>Regístrate</h1>
+        <p class="subtitle">Es rápido y fácil.</p>
+        <div id="registerMsg" class="form-msg error" hidden></div>
+        <form id="registerForm" novalidate>
+          <div class="name-row">
+            <div class="field" id="firstNameField">
+              <input type="text" id="firstName" placeholder="Nombre">
+              <div class="error-text">Introduce tu nombre.</div>
+            </div>
+            <div class="field" id="lastNameField">
+              <input type="text" id="lastName" placeholder="Apellidos">
+              <div class="error-text">Introduce tus apellidos.</div>
+            </div>
+          </div>
+          <div class="field" id="regEmailField">
+            <input type="email" id="regEmail" placeholder="Correo electrónico">
+            <div class="error-text">Introduce un correo electrónico válido.</div>
+          </div>
+          <div class="field" id="regPasswordField">
+            <input type="password" id="regPassword" placeholder="Contraseña nueva">
+            <div class="error-text">La contraseña debe tener al menos 6 caracteres.</div>
+          </div>
+          <div class="label-small">Género</div>
+          <div class="field" id="genderField">
+            <div class="gender-row">
+              <label class="gender-option">Mujer <input type="radio" name="gender" value="Mujer"></label>
+              <label class="gender-option">Hombre <input type="radio" name="gender" value="Hombre"></label>
+              <label class="gender-option">Otro <input type="radio" name="gender" value="Otro"></label>
+            </div>
+            <div class="error-text">Selecciona tu género.</div>
+          </div>
+          <p class="terms">
+            Página de demostración local para practicar HTML, CSS y JavaScript.
+            No es el sitio real de Facebook y no envía datos a ningún servidor.
+          </p>
+          <div class="create-account">
+            <button type="submit" class="btn-create">Registrarte</button>
+          </div>
+        </form>
+        <hr>
+        <p class="footer-note"><a id="goLoginFromRegister" href="#">¿Ya tienes una cuenta?</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ VISTA: FEED ============ -->
+  <div id="homeView" hidden>
+    <div class="topbar">
+      <h1 class="logo">facebook</h1>
+      <div class="user-info">
+        <div class="avatar" id="avatar">?</div>
+        <span id="userName"></span>
+        <button class="btn-logout" id="logoutBtn">Cerrar sesión</button>
+      </div>
+    </div>
+    <div class="feed">
+      <div class="card post-composer">
+        <textarea id="postText" placeholder="¿Qué estás pensando?"></textarea>
+        <div class="composer-actions">
+          <button class="btn-post" id="postBtn" disabled>Publicar</button>
+        </div>
+      </div>
+      <div class="card">
+        <div id="postsList"></div>
+        <div class="empty-state" id="emptyState" hidden>Aún no hay publicaciones. ¡Escribe la primera!</div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // Todo funciona 100% en el navegador con localStorage. No se envían datos a ningún servidor.
+  const USERS_KEY = "fb_users";
+  const SESSION_KEY = "fb_session";
+  const POSTS_KEY = "fb_posts";
+
+  const getUsers = () => JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
+  const saveUsers = (u) => localStorage.setItem(USERS_KEY, JSON.stringify(u));
+  const findUserByEmail = (email) => getUsers().find(u => u.email.toLowerCase() === email.toLowerCase());
+  const getPosts = () => JSON.parse(localStorage.getItem(POSTS_KEY) || "[]");
+  const savePosts = (p) => localStorage.setItem(POSTS_KEY, JSON.stringify(p));
+  const getCurrentUser = () => {
+    const email = localStorage.getItem(SESSION_KEY);
+    return email ? findUserByEmail(email) : null;
+  };
+
+  const loginView = document.getElementById("loginView");
+  const registerView = document.getElementById("registerView");
+  const homeView = document.getElementById("homeView");
+
+  function showView(view) {
+    loginView.hidden = view !== "login";
+    registerView.hidden = view !== "register";
+    homeView.hidden = view !== "home";
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  // ---------- LOGIN ----------
+  const loginForm = document.getElementById("loginForm");
+  const loginEmail = document.getElementById("loginEmail");
+  const loginPassword = document.getElementById("loginPassword");
+  const loginEmailField = document.getElementById("loginEmailField");
+  const loginPassField = document.getElementById("loginPassField");
+  const loginPassError = document.getElementById("loginPassError");
+  const loginMsg = document.getElementById("loginMsg");
+
+  loginForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    loginEmailField.classList.remove("has-error");
+    loginPassField.classList.remove("has-error");
+    loginMsg.hidden = true;
+
+    const email = loginEmail.value.trim();
+    const password = loginPassword.value;
+    let hasError = false;
+    if (!email) { loginEmailField.classList.add("has-error"); hasError = true; }
+    if (!password) { loginPassField.classList.add("has-error"); hasError = true; }
+    if (hasError) return;
+
+    const user = findUserByEmail(email);
+    if (!user) {
+      loginMsg.textContent = "No hemos encontrado ninguna cuenta con ese correo electrónico.";
+      loginMsg.hidden = false;
+      return;
+    }
+    if (user.password !== password) {
+      loginPassField.classList.add("has-error");
+      loginPassError.textContent = "La contraseña que has introducido es incorrecta.";
+      return;
+    }
+    localStorage.setItem(SESSION_KEY, email.toLowerCase());
+    enterHome();
+  });
+
+  document.getElementById("forgotLink").addEventListener("click", () => {
+    loginMsg.textContent = "Esto es una demo local: no hay recuperación de contraseña por correo real.";
+    loginMsg.hidden = false;
+  });
+
+  document.getElementById("goRegister").addEventListener("click", () => showView("register"));
+  document.getElementById("goLoginFromRegister").addEventListener("click", (e) => {
+    e.preventDefault();
+    showView("login");
+  });
+
+  // ---------- REGISTRO ----------
+  const registerForm = document.getElementById("registerForm");
+  const registerMsg = document.getElementById("registerMsg");
+  const regFields = {
+    firstName: document.getElementById("firstNameField"),
+    lastName: document.getElementById("lastNameField"),
+    email: document.getElementById("regEmailField"),
+    password: document.getElementById("regPasswordField"),
+    gender: document.getElementById("genderField"),
+  };
+  const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  registerForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    Object.values(regFields).forEach(f => f.classList.remove("has-error"));
+    registerMsg.hidden = true;
+
+    const firstName = document.getElementById("firstName").value.trim();
+    const lastName = document.getElementById("lastName").value.trim();
+    const email = document.getElementById("regEmail").value.trim();
+    const password = document.getElementById("regPassword").value;
+    const gender = registerForm.querySelector('input[name="gender"]:checked');
+
+    let hasError = false;
+    if (!firstName) { regFields.firstName.classList.add("has-error"); hasError = true; }
+    if (!lastName) { regFields.lastName.classList.add("has-error"); hasError = true; }
+    if (!isValidEmail(email)) { regFields.email.classList.add("has-error"); hasError = true; }
+    if (password.length < 6) { regFields.password.classList.add("has-error"); hasError = true; }
+    if (!gender) { regFields.gender.classList.add("has-error"); hasError = true; }
+    if (hasError) return;
+
+    if (findUserByEmail(email)) {
+      registerMsg.textContent = "Ya existe una cuenta registrada con este correo electrónico.";
+      registerMsg.hidden = false;
+      return;
+    }
+
+    const users = getUsers();
+    users.push({ firstName, lastName, email, password, gender: gender.value });
+    saveUsers(users);
+    localStorage.setItem(SESSION_KEY, email.toLowerCase());
+    registerForm.reset();
+    enterHome();
+  });
+
+  // ---------- HOME / FEED ----------
+  const userNameEl = document.getElementById("userName");
+  const avatarEl = document.getElementById("avatar");
+  const postText = document.getElementById("postText");
+  const postBtn = document.getElementById("postBtn");
+  const postsList = document.getElementById("postsList");
+  const emptyState = document.getElementById("emptyState");
+
+  function enterHome() {
+    const user = getCurrentUser();
+    if (!user) { showView("login"); return; }
+    userNameEl.textContent = `${user.firstName} ${user.lastName}`;
+    avatarEl.textContent = user.firstName.charAt(0).toUpperCase();
+    renderPosts();
+    showView("home");
+  }
+
+  function timeAgo(ts) {
+    const diffMin = Math.floor((Date.now() - ts) / 60000);
+    if (diffMin < 1) return "justo ahora";
+    if (diffMin < 60) return `hace ${diffMin} min`;
+    const diffHrs = Math.floor(diffMin / 60);
+    if (diffHrs < 24) return `hace ${diffHrs} h`;
+    return new Date(ts).toLocaleDateString();
+  }
+
+  function renderPosts() {
+    const user = getCurrentUser();
+    const posts = getPosts().sort((a, b) => b.timestamp - a.timestamp);
+    postsList.innerHTML = "";
+    emptyState.hidden = posts.length !== 0;
+
+    posts.forEach(post => {
+      const div = document.createElement("div");
+      div.className = "post";
+      div.innerHTML = `
+        <div class="post-header">
+          <div class="avatar">${escapeHtml(post.authorName.charAt(0).toUpperCase())}</div>
+          <div>
+            <div class="post-author">${escapeHtml(post.authorName)}</div>
+            <div class="post-time">${timeAgo(post.timestamp)}</div>
+          </div>
+        </div>
+        <div class="post-text">${escapeHtml(post.text)}</div>
+        ${post.authorEmail === user.email ? `<button class="btn-delete" data-id="${post.id}">Eliminar</button>` : ""}
+      `;
+      postsList.appendChild(div);
+    });
+
+    postsList.querySelectorAll(".btn-delete").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-id");
+        savePosts(getPosts().filter(p => String(p.id) !== id));
+        renderPosts();
+      });
+    });
+  }
+
+  postText.addEventListener("input", () => {
+    postBtn.disabled = postText.value.trim().length === 0;
+  });
+
+  postBtn.addEventListener("click", () => {
+    const text = postText.value.trim();
+    if (!text) return;
+    const user = getCurrentUser();
+    const posts = getPosts();
+    posts.push({ id: Date.now(), authorName: `${user.firstName} ${user.lastName}`, authorEmail: user.email, text, timestamp: Date.now() });
+    savePosts(posts);
+    postText.value = "";
+    postBtn.disabled = true;
+    renderPosts();
+  });
+
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    localStorage.removeItem(SESSION_KEY);
+    showView("login");
+  });
+
+  // ---------- INICIO ----------
+  if (getCurrentUser()) {
+    enterHome();
+  } else {
+    showView("login");
+  }
+</script>
+</body>
+</html>
