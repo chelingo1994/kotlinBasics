@@ -1,0 +1,835 @@
+<title>Ensayo</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #eef1f6;
+    --paper-line: #dde3ee;
+    --surface: #ffffff;
+    --surface-2: #f6f8fb;
+    --ink: #1b2430;
+    --ink-soft: #4d5666;
+    --muted: #7a8496;
+    --border: #d7dce4;
+    --accent: #3457d5;
+    --accent-ink: #ffffff;
+    --accent-soft: #dde4fb;
+    --danger: #b3261e;
+    --danger-soft: #f8e2e0;
+    --success: #1e7a4c;
+    --success-soft: #ddeee3;
+    --stamp: #b3261e;
+    --shadow: 0 1px 2px rgba(27,36,48,.06), 0 8px 24px rgba(27,36,48,.08);
+    --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+    --font-body: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #10131a;
+      --paper-line: #1a1f2b;
+      --surface: #171b24;
+      --surface-2: #1d2230;
+      --ink: #e7e9f0;
+      --ink-soft: #c2c8d6;
+      --muted: #8b93a4;
+      --border: #2a3140;
+      --accent: #8fa1ff;
+      --accent-ink: #0f1220;
+      --accent-soft: #232b47;
+      --danger: #ff9b90;
+      --danger-soft: #3a2226;
+      --success: #7fd8a8;
+      --success-soft: #1c3327;
+      --stamp: #ff9b90;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #10131a;
+    --paper-line: #1a1f2b;
+    --surface: #171b24;
+    --surface-2: #1d2230;
+    --ink: #e7e9f0;
+    --ink-soft: #c2c8d6;
+    --muted: #8b93a4;
+    --border: #2a3140;
+    --accent: #8fa1ff;
+    --accent-ink: #0f1220;
+    --accent-soft: #232b47;
+    --danger: #ff9b90;
+    --danger-soft: #3a2226;
+    --success: #7fd8a8;
+    --success-soft: #1c3327;
+    --stamp: #ff9b90;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+  }
+
+  * { box-sizing: border-box; }
+  html { color-scheme: light dark; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+      linear-gradient(var(--paper-line) 1px, transparent 1px) 0 0 / 100% 32px,
+      var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.5;
+    padding: 0 16px;
+  }
+  [hidden] { display: none !important; }
+  a { color: var(--accent); }
+  h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; }
+  ::selection { background: var(--accent-soft); }
+
+  .shell {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding-block: 28px 56px;
+  }
+
+  /* ---- Top bar ---- */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding-bottom: 20px;
+    margin-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+  .brand { display: flex; align-items: baseline; gap: 12px; }
+  .brand h1 { font-size: 30px; font-weight: 600; letter-spacing: -0.01em; }
+  .stamp {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--stamp);
+    border: 1.5px dashed var(--stamp);
+    border-radius: 4px;
+    padding: 3px 8px;
+    transform: rotate(-4deg);
+    white-space: nowrap;
+  }
+  .session-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  .avatar {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--accent); color: var(--accent-ink);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-weight: 500; font-size: 13px;
+    flex-shrink: 0;
+  }
+  .btn-ghost {
+    font-family: var(--font-body); font-size: 13px; font-weight: 600;
+    background: none; border: 1px solid var(--border); color: var(--ink-soft);
+    border-radius: 6px; padding: 6px 12px; cursor: pointer;
+  }
+  .btn-ghost:hover { border-color: var(--muted); color: var(--ink); }
+
+  .disclaimer {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    background: var(--accent-soft);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    margin-bottom: 28px;
+  }
+  .disclaimer strong { color: var(--ink); }
+
+  /* ---- Auth views ---- */
+  .auth-wrap {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 56px;
+    align-items: center;
+    padding-block: 24px;
+  }
+  .auth-intro h2 {
+    font-size: 34px;
+    font-weight: 500;
+    line-height: 1.25;
+    margin-bottom: 14px;
+  }
+  .auth-intro p { color: var(--ink-soft); max-width: 46ch; }
+  .exercise-list {
+    margin-top: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .exercise-list li { list-style: none; }
+  .exercise-list b { color: var(--ink-soft); }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    padding: 26px;
+  }
+  .card h3 { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+  .card .card-sub { color: var(--muted); font-size: 13.5px; margin-bottom: 18px; }
+
+  .field { margin-bottom: 14px; }
+  .field label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    margin-bottom: 5px;
+  }
+  .name-row { display: flex; gap: 10px; }
+  .name-row .field { flex: 1; }
+  input[type="text"], input[type="email"], input[type="password"], select {
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: 15px;
+    padding: 10px 12px;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    color: var(--ink);
+    outline: none;
+  }
+  input:focus, select:focus { border-color: var(--accent); background: var(--surface); }
+  .hint { font-size: 11.5px; color: var(--muted); margin-top: 4px; }
+  .error-text { font-size: 12.5px; color: var(--danger); margin-top: 4px; display: none; }
+  .field.has-error input, .field.has-error select { border-color: var(--danger); }
+  .field.has-error .error-text { display: block; }
+
+  .gender-row { display: flex; gap: 8px; }
+  .gender-option {
+    flex: 1;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 8px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 13.5px;
+    background: var(--surface-2);
+    cursor: pointer;
+  }
+
+  .btn-primary {
+    width: 100%;
+    background: var(--accent);
+    color: var(--accent-ink);
+    border: none;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 15.5px;
+    font-weight: 600;
+    padding: 11px 0;
+    cursor: pointer;
+    margin-top: 6px;
+  }
+  .btn-primary:hover { filter: brightness(1.06); }
+  .btn-primary:disabled { opacity: .55; cursor: not-allowed; }
+
+  .switch-line {
+    text-align: center;
+    font-size: 13.5px;
+    color: var(--muted);
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+  .switch-line button {
+    background: none; border: none; color: var(--accent);
+    font: inherit; font-weight: 600; cursor: pointer; padding: 0;
+  }
+
+  .form-msg { font-size: 13.5px; border-radius: 7px; padding: 9px 12px; margin-bottom: 14px; }
+  .form-msg.error { background: var(--danger-soft); color: var(--danger); }
+  .form-msg.success { background: var(--success-soft); color: var(--success); }
+  .form-msg.info { background: var(--accent-soft); color: var(--ink-soft); }
+
+  /* ---- Feed ---- */
+  .app-grid {
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    gap: 24px;
+    align-items: start;
+  }
+  .nav-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 18px;
+  }
+  .nav-tabs button {
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .nav-tabs button.active { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+
+  .composer textarea {
+    width: 100%;
+    border: none;
+    resize: vertical;
+    min-height: 56px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    outline: none;
+    background: transparent;
+    color: var(--ink);
+  }
+  .composer-actions {
+    display: flex; justify-content: flex-end; align-items: center; gap: 10px;
+    border-top: 1px solid var(--border); margin-top: 10px; padding-top: 10px;
+  }
+  .char-count { font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); margin-right: auto; }
+
+  .post-list { display: flex; flex-direction: column; }
+  .post {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .post:last-child { border-bottom: none; padding-bottom: 0; }
+  .post:first-child { padding-top: 0; }
+  .post-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .post-author { font-weight: 600; font-size: 14.5px; }
+  .post-time { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+  .post-text { font-size: 15px; white-space: pre-wrap; }
+  .btn-delete {
+    background: none; border: none; color: var(--muted); font-size: 12px;
+    cursor: pointer; margin-top: 6px; font-family: var(--font-mono);
+  }
+  .btn-delete:hover { color: var(--danger); }
+  .empty-state { text-align: center; color: var(--muted); padding: 30px 10px; font-size: 14px; }
+
+  .side-card { display: flex; flex-direction: column; gap: 14px; }
+  .side-card h4 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--muted);
+    margin: 0;
+  }
+  .stat-row { display: flex; justify-content: space-between; align-items: baseline; }
+  .stat-num { font-family: var(--font-display); font-size: 26px; font-variant-numeric: tabular-nums; }
+  .stat-label { font-size: 12.5px; color: var(--muted); }
+
+  /* ---- Records table ---- */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th, td {
+    text-align: left;
+    padding: 9px 10px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  th { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 500; }
+  td.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--ink-soft); }
+  .gender-badge {
+    font-family: var(--font-mono); font-size: 11px; padding: 2px 7px; border-radius: 100px;
+    background: var(--accent-soft); color: var(--ink-soft);
+  }
+
+  footer.page-footer {
+    margin-top: 36px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    font-size: 12.5px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  @media (max-width: 760px) {
+    .auth-wrap { grid-template-columns: 1fr; gap: 28px; }
+    .app-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="shell">
+  <div class="topbar">
+    <div class="brand">
+      <h1>Ensayo</h1>
+      <span class="stamp">demo · práctica</span>
+    </div>
+    <div class="session-pill" id="sessionPill" hidden>
+      <div class="avatar" id="avatarChip">?</div>
+      <span id="sessionName"></span>
+      <button class="btn-ghost" id="logoutBtn">Salir</button>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    <span>ⓘ</span>
+    <div>
+      <strong>Esto es un ejercicio de práctica de formularios (HTML, CSS, JS)</strong>, hecho para aprender —
+      no es Facebook ni ninguna red social real, y no está afiliado a Meta. No escribas datos personales
+      reales: usa un nombre y correo de prueba. Los registros quedan guardados solo para quienes abran
+      este mismo enlace dentro de tu organización de Claude.
+    </div>
+  </div>
+
+  <div id="dbWarning" class="form-msg error" hidden>
+    No se pudo conectar el almacenamiento de esta demo en esta vista. Ábrela desde tu enlace de Artifact
+    publicado para que el registro y el listado funcionen.
+  </div>
+
+  <!-- ============ LOGIN / REGISTER ============ -->
+  <div id="authView">
+    <div class="auth-wrap">
+      <div class="auth-intro">
+        <h2>Un formulario de acceso para practicar, de principio a fin.</h2>
+        <p>
+          Regístrate con datos inventados, inicia sesión, publica algo en el tablón y revisa el panel de
+          registros para ver exactamente qué queda guardado y cómo.
+        </p>
+        <ul class="exercise-list">
+          <li><b>01</b> — validación de formularios en el cliente</li>
+          <li><b>02</b> — alta de cuenta con hash de contraseña</li>
+          <li><b>03</b> — publicaciones en tiempo real</li>
+          <li><b>04</b> — panel de registros para quien lo publicó</li>
+        </ul>
+      </div>
+
+      <div class="card" id="loginCard">
+        <h3>Iniciar sesión</h3>
+        <div class="card-sub">Usa la cuenta de prueba que creaste antes.</div>
+        <div class="form-msg error" id="loginMsg" hidden></div>
+        <form id="loginForm" novalidate>
+          <div class="field" id="loginEmailField">
+            <label for="loginEmail">Correo (de prueba)</label>
+            <input type="text" id="loginEmail" autocomplete="off">
+            <div class="error-text">Introduce el correo con el que te registraste.</div>
+          </div>
+          <div class="field" id="loginPassField">
+            <label for="loginPassword">Contraseña</label>
+            <input type="password" id="loginPassword" autocomplete="off">
+            <div class="error-text" id="loginPassError">Introduce tu contraseña.</div>
+          </div>
+          <button type="submit" class="btn-primary" id="loginSubmit">Entrar</button>
+        </form>
+        <div class="switch-line">¿Aún no tienes cuenta de prueba? <button type="button" id="goRegister">Regístrate</button></div>
+      </div>
+
+      <div class="card" id="registerCard" hidden>
+        <h3>Crear cuenta de prueba</h3>
+        <div class="card-sub">Ningún dato aquí se verifica ni se usa para nada real.</div>
+        <div class="form-msg error" id="registerMsg" hidden></div>
+        <form id="registerForm" novalidate>
+          <div class="name-row">
+            <div class="field" id="firstNameField">
+              <label for="firstName">Nombre</label>
+              <input type="text" id="firstName">
+              <div class="error-text">Introduce un nombre.</div>
+            </div>
+            <div class="field" id="lastNameField">
+              <label for="lastName">Apellidos</label>
+              <input type="text" id="lastName">
+              <div class="error-text">Introduce un apellido.</div>
+            </div>
+          </div>
+          <div class="field" id="regEmailField">
+            <label for="regEmail">Correo (de prueba)</label>
+            <input type="text" id="regEmail" placeholder="prueba@ejemplo.com">
+            <div class="error-text">Escribe un correo con formato válido.</div>
+          </div>
+          <div class="field" id="regPasswordField">
+            <label for="regPassword">Contraseña</label>
+            <input type="password" id="regPassword">
+            <div class="hint">No uses una contraseña real. Se guarda como hash, solo para esta demo.</div>
+            <div class="error-text">Debe tener al menos 6 caracteres.</div>
+          </div>
+          <div class="field" id="genderField">
+            <label>Género</label>
+            <div class="gender-row">
+              <label class="gender-option">Mujer <input type="radio" name="gender" value="Mujer"></label>
+              <label class="gender-option">Hombre <input type="radio" name="gender" value="Hombre"></label>
+              <label class="gender-option">Otro <input type="radio" name="gender" value="Otro"></label>
+            </div>
+            <div class="error-text">Selecciona una opción.</div>
+          </div>
+          <button type="submit" class="btn-primary" id="registerSubmit">Crear cuenta</button>
+        </form>
+        <div class="switch-line">¿Ya tienes cuenta? <button type="button" id="goLogin">Inicia sesión</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ APP (feed + records) ============ -->
+  <div id="appView" hidden>
+    <div class="nav-tabs">
+      <button id="tabFeed" class="active" type="button">Tablón</button>
+      <button id="tabRecords" type="button">Registros</button>
+    </div>
+
+    <div class="app-grid" id="feedView">
+      <div>
+        <div class="card composer">
+          <textarea id="postText" placeholder="¿Qué quieres anotar en el ensayo de hoy?" maxlength="280"></textarea>
+          <div class="composer-actions">
+            <span class="char-count" id="charCount">0 / 280</span>
+            <button class="btn-primary" id="postBtn" style="width:auto; padding:8px 18px;" disabled>Publicar</button>
+          </div>
+        </div>
+        <div class="card" style="margin-top:16px;">
+          <div class="post-list" id="postsList"></div>
+          <div class="empty-state" id="emptyPosts" hidden>Nadie ha publicado nada todavía. Sé la primera persona.</div>
+        </div>
+      </div>
+      <div class="card side-card">
+        <h4>Estado en vivo</h4>
+        <div class="stat-row">
+          <span class="stat-num" id="statPosts">0</span>
+          <span class="stat-label">publicaciones</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-num" id="statUsers">0</span>
+          <span class="stat-label">cuentas de prueba</span>
+        </div>
+        <div class="hint">Los datos se guardan en tiempo real en la base del Artifact — pruébalo en dos pestañas a la vez.</div>
+      </div>
+    </div>
+
+    <div class="card" id="recordsView" hidden>
+      <h3>Registros</h3>
+      <div class="card-sub">Todas las cuentas de prueba creadas en este enlace. Las contraseñas nunca se muestran aquí, solo un hash se guarda internamente.</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Nombre</th><th>Correo</th><th>Género</th><th>Creado</th></tr>
+          </thead>
+          <tbody id="recordsBody"></tbody>
+        </table>
+      </div>
+      <div class="empty-state" id="emptyRecords" hidden>Todavía no hay cuentas registradas.</div>
+    </div>
+  </div>
+
+  <footer class="page-footer">
+    Ensayo — proyecto de práctica de formularios web. No recolecta datos reales ni está afiliado a ninguna marca.
+  </footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  const SESSION_KEY = "ensayo_session_email";
+  let db = null;
+  let currentUser = null; // { firstName, lastName, email, gender }
+  let unsubPosts = null;
+  let unsubRecords = null;
+
+  const $ = (id) => document.getElementById(id);
+  const authView = $("authView");
+  const appView = $("appView");
+  const loginCard = $("loginCard");
+  const registerCard = $("registerCard");
+  const dbWarning = $("dbWarning");
+  const sessionPill = $("sessionPill");
+
+  function escapeHtml(str) {
+    const d = document.createElement("div");
+    d.textContent = str;
+    return d.innerHTML;
+  }
+
+  async function sha256(text) {
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+  }
+
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  function timeAgo(iso) {
+    const diffMin = Math.floor((Date.now() - new Date(iso).getTime()) / 60000);
+    if (diffMin < 1) return "justo ahora";
+    if (diffMin < 60) return `hace ${diffMin} min`;
+    const diffHrs = Math.floor(diffMin / 60);
+    if (diffHrs < 24) return `hace ${diffHrs} h`;
+    return new Date(iso).toLocaleDateString();
+  }
+
+  function formatDate(iso) {
+    const d = new Date(iso);
+    return d.toLocaleDateString() + " " + d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  }
+
+  // ---------- view switching ----------
+  function showAuth(which) {
+    authView.hidden = false;
+    appView.hidden = true;
+    sessionPill.hidden = true;
+    loginCard.hidden = which !== "login";
+    registerCard.hidden = which !== "register";
+  }
+
+  function showApp() {
+    authView.hidden = true;
+    appView.hidden = false;
+    sessionPill.hidden = false;
+    $("sessionName").textContent = `${currentUser.firstName} ${currentUser.lastName}`;
+    $("avatarChip").textContent = currentUser.firstName.charAt(0).toUpperCase();
+  }
+
+  $("goRegister").addEventListener("click", () => showAuth("register"));
+  $("goLogin").addEventListener("click", () => showAuth("login"));
+
+  $("tabFeed").addEventListener("click", () => switchTab("feed"));
+  $("tabRecords").addEventListener("click", () => switchTab("records"));
+
+  function switchTab(tab) {
+    $("tabFeed").classList.toggle("active", tab === "feed");
+    $("tabRecords").classList.toggle("active", tab === "records");
+    $("feedView").hidden = tab !== "feed";
+    $("recordsView").hidden = tab !== "records";
+  }
+
+  // ---------- register ----------
+  const registerForm = $("registerForm");
+  const regFields = {
+    firstName: $("firstNameField"),
+    lastName: $("lastNameField"),
+    email: $("regEmailField"),
+    password: $("regPasswordField"),
+    gender: $("genderField"),
+  };
+
+  registerForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!db) return;
+    Object.values(regFields).forEach(f => f.classList.remove("has-error"));
+    $("registerMsg").hidden = true;
+
+    const firstName = $("firstName").value.trim();
+    const lastName = $("lastName").value.trim();
+    const email = $("regEmail").value.trim().toLowerCase();
+    const password = $("regPassword").value;
+    const gender = registerForm.querySelector('input[name="gender"]:checked');
+
+    let hasError = false;
+    if (!firstName) { regFields.firstName.classList.add("has-error"); hasError = true; }
+    if (!lastName) { regFields.lastName.classList.add("has-error"); hasError = true; }
+    if (!isValidEmail(email)) { regFields.email.classList.add("has-error"); hasError = true; }
+    if (password.length < 6) { regFields.password.classList.add("has-error"); hasError = true; }
+    if (!gender) { regFields.gender.classList.add("has-error"); hasError = true; }
+    if (hasError) return;
+
+    const submitBtn = $("registerSubmit");
+    submitBtn.disabled = true;
+    try {
+      const existing = await db.collection("registrations").where("email", "==", email).limit(1).get();
+      if (!existing.empty) {
+        $("registerMsg").textContent = "Ya existe una cuenta de prueba con ese correo.";
+        $("registerMsg").hidden = false;
+        return;
+      }
+      const passwordHash = await sha256(password);
+      await db.collection("registrations").add({
+        firstName, lastName, email, gender: gender.value,
+        passwordHash,
+        createdAt: new Date().toISOString(),
+      });
+      currentUser = { firstName, lastName, email, gender: gender.value };
+      localStorage.setItem(SESSION_KEY, email);
+      registerForm.reset();
+      showApp();
+    } catch (err) {
+      $("registerMsg").textContent = "No se pudo guardar el registro. Intenta de nuevo.";
+      $("registerMsg").hidden = false;
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+
+  // ---------- login ----------
+  const loginForm = $("loginForm");
+  const loginEmailField = $("loginEmailField");
+  const loginPassField = $("loginPassField");
+  const loginPassError = $("loginPassError");
+
+  loginForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!db) return;
+    loginEmailField.classList.remove("has-error");
+    loginPassField.classList.remove("has-error");
+    $("loginMsg").hidden = true;
+    loginPassError.textContent = "Introduce tu contraseña.";
+
+    const email = $("loginEmail").value.trim().toLowerCase();
+    const password = $("loginPassword").value;
+    let hasError = false;
+    if (!email) { loginEmailField.classList.add("has-error"); hasError = true; }
+    if (!password) { loginPassField.classList.add("has-error"); hasError = true; }
+    if (hasError) return;
+
+    const submitBtn = $("loginSubmit");
+    submitBtn.disabled = true;
+    try {
+      const found = await db.collection("registrations").where("email", "==", email).limit(1).get();
+      if (found.empty) {
+        $("loginMsg").textContent = "No hay ninguna cuenta de prueba con ese correo.";
+        $("loginMsg").hidden = false;
+        return;
+      }
+      const user = found.docs[0].data();
+      const passwordHash = await sha256(password);
+      if (passwordHash !== user.passwordHash) {
+        loginPassField.classList.add("has-error");
+        loginPassError.textContent = "La contraseña no coincide.";
+        return;
+      }
+      currentUser = { firstName: user.firstName, lastName: user.lastName, email: user.email, gender: user.gender };
+      localStorage.setItem(SESSION_KEY, email);
+      showApp();
+    } catch (err) {
+      $("loginMsg").textContent = "No se pudo iniciar sesión. Intenta de nuevo.";
+      $("loginMsg").hidden = false;
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+
+  $("logoutBtn").addEventListener("click", () => {
+    localStorage.removeItem(SESSION_KEY);
+    currentUser = null;
+    if (unsubPosts) unsubPosts();
+    if (unsubRecords) unsubRecords();
+    showAuth("login");
+  });
+
+  // ---------- feed ----------
+  const postText = $("postText");
+  const postBtn = $("postBtn");
+  const charCount = $("charCount");
+
+  postText.addEventListener("input", () => {
+    const len = postText.value.length;
+    charCount.textContent = `${len} / 280`;
+    postBtn.disabled = postText.value.trim().length === 0;
+  });
+
+  postBtn.addEventListener("click", async () => {
+    const text = postText.value.trim();
+    if (!text || !db || !currentUser) return;
+    postBtn.disabled = true;
+    try {
+      await db.collection("posts").add({
+        authorName: `${currentUser.firstName} ${currentUser.lastName}`,
+        authorEmail: currentUser.email,
+        text,
+        createdAt: new Date().toISOString(),
+      });
+      postText.value = "";
+      charCount.textContent = "0 / 280";
+    } finally {
+      postBtn.disabled = postText.value.trim().length === 0;
+    }
+  });
+
+  function renderPosts(snap) {
+    const docs = snap.docs.slice().sort((a, b) => new Date(b.data().createdAt) - new Date(a.data().createdAt));
+    const list = $("postsList");
+    list.innerHTML = "";
+    $("emptyPosts").hidden = docs.length !== 0;
+    $("statPosts").textContent = docs.length;
+
+    docs.forEach(doc => {
+      const p = doc.data();
+      const div = document.createElement("div");
+      div.className = "post";
+      const canDelete = currentUser && p.authorEmail === currentUser.email;
+      div.innerHTML = `
+        <div class="post-header">
+          <div class="avatar" style="width:26px;height:26px;font-size:11px;">${escapeHtml((p.authorName || "?").charAt(0).toUpperCase())}</div>
+          <div>
+            <div class="post-author">${escapeHtml(p.authorName || "Anónimo")}</div>
+            <div class="post-time">${timeAgo(p.createdAt)}</div>
+          </div>
+        </div>
+        <div class="post-text">${escapeHtml(p.text || "")}</div>
+        ${canDelete ? `<button class="btn-delete" data-id="${doc.id}">Eliminar</button>` : ""}
+      `;
+      list.appendChild(div);
+    });
+
+    list.querySelectorAll(".btn-delete").forEach(btn => {
+      btn.addEventListener("click", () => {
+        db.collection("posts").doc(btn.getAttribute("data-id")).delete();
+      });
+    });
+  }
+
+  function renderRecords(snap) {
+    const docs = snap.docs.slice().sort((a, b) => new Date(b.data().createdAt) - new Date(a.data().createdAt));
+    const body = $("recordsBody");
+    body.innerHTML = "";
+    $("emptyRecords").hidden = docs.length !== 0;
+    $("statUsers").textContent = docs.length;
+
+    docs.forEach(doc => {
+      const u = doc.data();
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${escapeHtml(u.firstName || "")} ${escapeHtml(u.lastName || "")}</td>
+        <td class="mono">${escapeHtml(u.email || "")}</td>
+        <td><span class="gender-badge">${escapeHtml(u.gender || "—")}</span></td>
+        <td class="mono">${u.createdAt ? formatDate(u.createdAt) : "—"}</td>
+      `;
+      body.appendChild(tr);
+    });
+  }
+
+  function subscribeData() {
+    unsubPosts = db.collection("posts").onSnapshot(renderPosts, () => {});
+    unsubRecords = db.collection("registrations").onSnapshot(renderRecords, () => {});
+  }
+
+  // ---------- boot ----------
+  async function boot() {
+    showAuth("login");
+    db = await claude.use("db");
+    if (!db) {
+      dbWarning.hidden = false;
+      return;
+    }
+    subscribeData();
+
+    const savedEmail = localStorage.getItem(SESSION_KEY);
+    if (savedEmail) {
+      try {
+        const found = await db.collection("registrations").where("email", "==", savedEmail).limit(1).get();
+        if (!found.empty) {
+          const u = found.docs[0].data();
+          currentUser = { firstName: u.firstName, lastName: u.lastName, email: u.email, gender: u.gender };
+          showApp();
+        } else {
+          localStorage.removeItem(SESSION_KEY);
+        }
+      } catch (err) { /* stay on login */ }
+    }
+  }
+
+  boot();
+})();
+</script>
