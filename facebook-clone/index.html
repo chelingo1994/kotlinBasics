@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Facebook - iniciar sesión o registrarte</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="container">
+    <div class="left">
+      <h1 class="logo">facebook</h1>
+      <p class="tagline">Facebook te ayuda a comunicarte y compartir con las personas que forman parte de tu vida.</p>
+    </div>
+
+    <div class="right">
+      <div class="login-box">
+        <div id="formMsg" class="form-msg" style="display:none;"></div>
+        <form id="loginForm" novalidate>
+          <div class="field" id="emailField">
+            <input type="text" id="email" name="email" placeholder="Correo electrónico o número de teléfono" autocomplete="off">
+            <div class="error-text" id="emailError">Por favor, introduce tu correo electrónico.</div>
+          </div>
+          <div class="field" id="passField">
+            <input type="password" id="password" name="password" placeholder="Contraseña" autocomplete="off">
+            <div class="error-text" id="passError">Por favor, introduce tu contraseña.</div>
+          </div>
+          <button type="submit" class="btn-login">Iniciar sesión</button>
+          <a href="#" class="forgot" id="forgotLink">¿Olvidaste tu contraseña?</a>
+          <hr>
+          <div class="create-account">
+            <button type="button" class="btn-create" id="goRegister">Crear cuenta nueva</button>
+          </div>
+        </form>
+      </div>
+      <p class="footer-note">Cuenta de prueba: crea la tuya con <a href="register.html">Crear cuenta nueva</a>.</p>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regístrate en Facebook</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="register-wrapper">
+    <div class="register-box">
+      <h1>Regístrate</h1>
+      <p class="subtitle">Es rápido y fácil.</p>
+
+      <div id="formMsg" class="form-msg" style="display:none;"></div>
+
+      <form id="registerForm" novalidate>
+        <div class="name-row">
+          <div class="field" id="firstNameField">
+            <input type="text" id="firstName" placeholder="Nombre">
+            <div class="error-text" id="firstNameError">Introduce tu nombre.</div>
+          </div>
+          <div class="field" id="lastNameField">
+            <input type="text" id="lastName" placeholder="Apellidos">
+            <div class="error-text" id="lastNameError">Introduce tus apellidos.</div>
+          </div>
+        </div>
+
+        <div class="field" id="emailField">
+          <input type="email" id="email" placeholder="Correo electrónico">
+          <div class="error-text" id="emailError">Introduce un correo electrónico válido.</div>
+        </div>
+
+        <div class="field" id="passwordField">
+          <input type="password" id="password" placeholder="Contraseña nueva">
+          <div class="error-text" id="passwordError">La contraseña debe tener al menos 6 caracteres.</div>
+        </div>
+
+        <div class="label-small">Fecha de nacimiento</div>
+        <div class="field" id="dobField">
+          <div class="dob-row">
+            <select id="dobDay"></select>
+            <select id="dobMonth">
+              <option value="1">Ene</option>
+              <option value="2">Feb</option>
+              <option value="3">Mar</option>
+              <option value="4">Abr</option>
+              <option value="5">May</option>
+              <option value="6">Jun</option>
+              <option value="7">Jul</option>
+              <option value="8">Ago</option>
+              <option value="9">Sep</option>
+              <option value="10">Oct</option>
+              <option value="11">Nov</option>
+              <option value="12">Dic</option>
+            </select>
+            <select id="dobYear"></select>
+          </div>
+          <div class="error-text" id="dobError">Selecciona tu fecha de nacimiento.</div>
+        </div>
+
+        <div class="label-small">Género</div>
+        <div class="field" id="genderField">
+          <div class="gender-row">
+            <label class="gender-option">Mujer <input type="radio" name="gender" value="Mujer"></label>
+            <label class="gender-option">Hombre <input type="radio" name="gender" value="Hombre"></label>
+            <label class="gender-option">Personalizado <input type="radio" name="gender" value="Personalizado"></label>
+          </div>
+          <div class="error-text" id="genderError">Selecciona tu género.</div>
+        </div>
+
+        <p class="terms">
+          Al hacer clic en Registrarte, aceptas nuestras Condiciones, la Política de privacidad
+          y la Política de cookies. Esta es una página de demostración local para practicar
+          HTML, CSS y JavaScript; no es el sitio real de Facebook.
+        </p>
+
+        <div class="create-account">
+          <button type="submit" class="btn-create">Registrarte</button>
+        </div>
+      </form>
+
+      <hr>
+      <p class="footer-note"><a href="index.html">¿Ya tienes una cuenta?</a></p>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/register.js"></script>
+</body>
+</html>
